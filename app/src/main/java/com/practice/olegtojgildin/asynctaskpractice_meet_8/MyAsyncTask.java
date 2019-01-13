@@ -32,7 +32,7 @@ public class MyAsyncTask extends AsyncTask<Void,Void,Void> {
             Message message = mHandler.obtainMessage(MESSAGE_ID, rnd.nextInt(100));
             message.sendToTarget();
         }
-        return null;g
+        return null;
     }
 
 
