@@ -1,5 +1,6 @@
 package com.practice.olegtojgildin.asynctaskpractice_meet_8;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -43,19 +45,32 @@ public class SecondFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        myAsyncTask=new MyAsyncTask();
-        try {
-            result.setText(Integer.toString(  myAsyncTask.execute().get()));
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        myAsyncTask = new MyAsyncTask();
+        myAsyncTask.execute();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        myAsyncTask.cancel(true);
+    public class MyAsyncTask extends AsyncTask<Void, Void, Integer> {
+        private Random rnd;
+        private int randomNumber;
+
+        public MyAsyncTask() {
+            rnd = new Random();
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            randomNumber = rnd.nextInt(100);
+            return randomNumber;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            result.setText(Integer.toString(randomNumber));
+        }
     }
 }
