@@ -12,27 +12,20 @@ import java.util.concurrent.TimeUnit;
  * Created by olegtojgildin on 12/01/2019.
  */
 
-public class MyAsyncTask extends AsyncTask<Void,Void,Void> {
-    public static final int MESSAGE_ID=1;
+public class MyAsyncTask extends AsyncTask<Void,Void,Integer> {
     private Random rnd;
-    private Handler mHandler;
 
-    public MyAsyncTask(Handler handler){
+    public MyAsyncTask(){
         rnd=new Random();
-        mHandler=handler;
     }
     @Override
-    protected Void doInBackground(Void... voids) {
-        while (!isCancelled()) {
+    protected Integer doInBackground(Void... voids) {
             try {
                Thread.sleep(150);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Message message = mHandler.obtainMessage(MESSAGE_ID, rnd.nextInt(100));
-            message.sendToTarget();
-        }
-        return null;
+        return rnd.nextInt(100);
     }
 
 

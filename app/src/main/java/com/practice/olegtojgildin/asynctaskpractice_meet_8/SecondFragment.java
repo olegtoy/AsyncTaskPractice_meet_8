@@ -28,18 +28,6 @@ public class SecondFragment extends Fragment {
         return fragment;
     }
 
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MyAsyncTask.MESSAGE_ID:
-                    result.setText(Integer.toString((Integer) msg.obj));
-                default:
-                    super.handleMessage(msg);
-            }
-        }
-    };
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,8 +43,14 @@ public class SecondFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        myAsyncTask=new MyAsyncTask(mHandler);
-        myAsyncTask.execute();
+        myAsyncTask=new MyAsyncTask();
+        try {
+            result.setText(Integer.toString(  myAsyncTask.execute().get()));
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
